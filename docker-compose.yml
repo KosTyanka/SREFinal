@@ -1,50 +1,63 @@
 version: '3.8'
 
 services:
-  frontend:
-    build: ./frontend
-    ports:
-      - "3001:80"
-    networks:
-      - frontend-net
-    depends_on:
-      - backend
-
   backend:
-    build: ./backend
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/tickets
-      - PROMETHEUS_MULTIPROC_DIR=/tmp
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/concerts
     networks:
       - backend-net
-      - frontend-net
     depends_on:
       db:
         condition: service_healthy
     restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 2s
+      timeout: 1s
+      retries: 3
+      start_period: 5s
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - backend-net
+    depends_on:
+      - backend
+    restart: unless-stopped
 
   db:
-    image: postgres:15-alpine
+    image: postgres:15
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=tickets
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - POSTGRES_DB=concerts
+    ports:
+      - "5432:5432"
     networks:
       - backend-net
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
+      interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 3
+      start_period: 10s
 
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:latest
     ports:
-      - "9091:9090"
+      - "9090:9090"
     volumes:
       - ./monitoring/prometheus:/etc/prometheus
       - prometheus_data:/prometheus
@@ -54,26 +67,34 @@ services:
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
       - '--web.console.templates=/usr/share/prometheus/consoles'
     networks:
-      - monitoring-net
       - backend-net
+    restart: unless-stopped
 
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:latest
     ports:
       - "3002:3000"
     volumes:
-      - grafana_data:/var/lib/grafana
       - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+      - grafana_data:/var/lib/grafana
     environment:
-      - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
     networks:
-      - monitoring-net
+      - backend-net
+    restart: unless-stopped
+
+  pushgateway:
+    image: prom/pushgateway:latest
+    ports:
+      - "9091:9091"
+    restart: unless-stopped
+    networks:
+      - backend-net
 
 networks:
-  frontend-net:
   backend-net:
-  monitoring-net:
+    driver: bridge
 
 volumes:
   postgres_data:

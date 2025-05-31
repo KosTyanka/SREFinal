@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ChaosCompose Test Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .summary { background: #f5f5f5; padding: 20px; border-radius: 5px; }
+        .event { margin: 10px 0; padding: 10px; border: 1px solid #ddd; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>ChaosCompose Test Report</h1>
+    <div class="summary">
+        <h2>Summary</h2>
+        <p>Total Events: 3</p>
+        <p>Successful Recoveries: 2</p>
+        <p>Average Recovery Time: 8.08s</p>
+        <p>Maximum Recovery Time: 18.23s</p>
+    </div>
+    <h2>Detailed Events</h2>
+    
+    <div class="event">
+        <p><strong>Timestamp:</strong> 2025-05-31T13:31:53.957239</p>
+        <p><strong>Service:</strong> backend</p>
+        <p><strong>Action:</strong> kill</p>
+        <p><strong>Recovery Time:</strong> 6.02s</p>
+        
+    </div>
+    
+    <div class="event">
+        <p><strong>Timestamp:</strong> 2025-05-31T13:32:03.038749</p>
+        <p><strong>Service:</strong> db</p>
+        <p><strong>Action:</strong> pause</p>
+        <p><strong>Recovery Time:</strong> 18.23s</p>
+        
+    </div>
+    
+    <div class="event">
+        <p><strong>Timestamp:</strong> 2025-05-31T13:33:21.799204</p>
+        <p><strong>Service:</strong> backend</p>
+        <p><strong>Action:</strong> network_delay</p>
+        <p><strong>Recovery Time:</strong> N/As</p>
+        
+        <p class="error"><strong>Error:</strong> Command 'docker exec 7e31ac815516325f7a05162ded19f4c92ad302a26c7fa8518973b8506fce7a5c tc qdisc add dev eth0 root netem delay 1000ms' returned non-zero exit status 2.</p>
+        
+    </div>
+    
+</body>
+</html>

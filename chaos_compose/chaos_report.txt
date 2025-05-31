@@ -1,0 +1,25 @@
+
+ChaosCompose Test Report
+========================
+Total Events: 3
+Successful Recoveries: 3
+Average Recovery Time: 10.02s
+Maximum Recovery Time: 18.10s
+
+Detailed Events:
+---------------
+
+Timestamp: 2025-05-31T13:35:40.220194
+Service: backend
+Action: kill
+Recovery Time: 6.002880096435547s
+
+Timestamp: 2025-05-31T13:35:47.261825
+Service: db
+Action: pause
+Recovery Time: 18.096733331680298s
+
+Timestamp: 2025-05-31T13:36:07.403222
+Service: backend
+Action: kill
+Recovery Time: 5.958880186080933s

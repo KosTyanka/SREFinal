@@ -1,0 +1,327 @@
+apiVersion: 1
+
+groups:
+  - orgId: 1
+    name: Concert System Alerts
+    folder: Concert Monitoring
+    interval: 1m
+    rules:
+      - uid: backend_service_down
+        title: Backend Service Down
+        condition: '$A < 0.1'
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: prometheus
+            model:
+              expr: sum(rate(http_requests_total[5m]))
+              intervalMs: 1000
+              maxDataPoints: 43200
+        dashboardUid: ""
+        panelId: 0
+        noDataState: NoData
+        execErrState: Alerting
+        for: 1m
+        annotations:
+          description: |
+            Request rate has dropped below threshold, indicating possible service issues.
+            Current request rate: {{ $values.A }} requests/second
+          summary: Backend service is down or experiencing very low traffic
+        labels:
+          service: backend
+          severity: critical
+        isPaused: false
+
+      - uid: high_response_latency
+        title: High Response Latency
+        condition: '$A > 500'
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: prometheus
+            model:
+              expr: |
+                avg(
+                  rate(http_request_duration_seconds_sum[5m])
+                  /
+                  rate(http_request_duration_seconds_count[5m])
+                ) * 1000
+              intervalMs: 1000
+              maxDataPoints: 43200
+        dashboardUid: ""
+        panelId: 0
+        noDataState: NoData
+        execErrState: Alerting
+        for: 2m
+        annotations:
+          description: |
+            Average response time is above 500ms over the last 5 minutes.
+            Current average latency: {{ $values.A }}ms
+          summary: High response latency detected
+        labels:
+          service: backend
+          severity: warning
+        isPaused: false
+
+      - uid: database_connection_issues
+        title: Database Connection Issues
+        condition: '$A > 0 OR $B > 80'
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: prometheus
+            model:
+              expr: changes(pg_stat_activity_count[5m])
+              intervalMs: 1000
+              maxDataPoints: 43200
+          - refId: B
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: prometheus
+            model:
+              expr: pg_stat_activity_count
+              intervalMs: 1000
+              maxDataPoints: 43200
+        dashboardUid: ""
+        panelId: 0
+        noDataState: NoData
+        execErrState: Alerting
+        for: 1m
+        annotations:
+          description: |
+            Database experiencing connection errors or high connection count.
+            Connection changes: {{ $values.A }}, Active connections: {{ $values.B }}
+          summary: Database connection issues detected
+        labels:
+          service: database
+          severity: critical
+        isPaused: false
+
+      - uid: service_recovery_time
+        title: Service Recovery Time Alert
+        condition: '$A > 30'
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: prometheus
+            model:
+              expr: max_over_time(chaos_test_recovery_time_seconds[5m])
+              intervalMs: 1000
+              maxDataPoints: 43200
+        dashboardUid: ""
+        panelId: 0
+        noDataState: NoData
+        execErrState: Alerting
+        annotations:
+          description: |
+            Service recovery time exceeded 30 seconds in the last 5 minutes.
+            Current max recovery time: {{ $values.A }}s
+          summary: Service taking too long to recover
+        labels:
+          service: chaos-testing
+          severity: warning
+        isPaused: false
+
+      - uid: ticket_booking_failure_rate
+        title: Ticket Booking Failure Rate
+        condition: '$A > 1'
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: prometheus
+            model:
+              expr: |
+                100 * sum(rate(http_requests_total{endpoint="/book-ticket",status_code!="200"}[5m]))
+                /
+                sum(rate(http_requests_total{endpoint="/book-ticket"}[5m]))
+              intervalMs: 1000
+              maxDataPoints: 43200
+        dashboardUid: ""
+        panelId: 0
+        noDataState: NoData
+        execErrState: Alerting
+        for: 2m
+        annotations:
+          description: |
+            Ticket booking failure rate exceeds 1% over the last 5 minutes.
+            Current rate: {{ $values.A }}%
+          summary: High ticket booking failure rate
+        labels:
+          service: booking
+          severity: critical
+        isPaused: false
+
+      - uid: available_tickets_low
+        title: Available Tickets Low
+        condition: '$A < 50'
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: prometheus
+            model:
+              expr: min(tickets_remaining)
+              intervalMs: 1000
+              maxDataPoints: 43200
+        dashboardUid: ""
+        panelId: 0
+        noDataState: NoData
+        execErrState: Alerting
+        annotations:
+          description: |
+            Available tickets below threshold.
+            Current lowest count: {{ $values.A }}
+          summary: Low ticket inventory
+        labels:
+          service: inventory
+          severity: warning
+        isPaused: false
+
+      - uid: high_cpu_usage
+        title: High CPU Usage
+        condition: '$A > 80'
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: prometheus
+            model:
+              expr: sum(rate(process_cpu_seconds_total[1m])) * 100
+              intervalMs: 1000
+              maxDataPoints: 43200
+        dashboardUid: ""
+        panelId: 0
+        noDataState: NoData
+        execErrState: Alerting
+        for: 5m
+        annotations:
+          description: |
+            CPU usage is above 80% for 5 minutes.
+            Current CPU usage: {{ $values.A }}%
+          summary: High CPU usage detected
+        labels:
+          service: backend
+          severity: warning
+        isPaused: false
+
+      - uid: high_memory_usage
+        title: High Memory Usage
+        condition: '$A > 1024'
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: prometheus
+            model:
+              expr: sum(process_resident_memory_bytes) / 1024 / 1024
+              intervalMs: 1000
+              maxDataPoints: 43200
+        dashboardUid: ""
+        panelId: 0
+        noDataState: NoData
+        execErrState: Alerting
+        for: 5m
+        annotations:
+          description: |
+            Memory usage is above 1GB for 5 minutes.
+            Current memory usage: {{ $values.A }}MB
+          summary: High memory usage detected
+        labels:
+          service: backend
+          severity: warning
+        isPaused: false
+
+      - uid: low_ticket_count
+        title: Low Ticket Count
+        condition: '$A < 50'
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: prometheus
+            model:
+              expr: sum(active_tickets)
+              intervalMs: 1000
+              maxDataPoints: 43200
+        dashboardUid: ""
+        panelId: 0
+        noDataState: NoData
+        execErrState: Alerting
+        annotations:
+          description: |
+            Available tickets below threshold.
+            Current ticket count: {{ $values.A }}
+          summary: Low ticket inventory
+        labels:
+          service: inventory
+          severity: warning
+        isPaused: false
+
+      - uid: request_rate_spike
+        title: Request Rate Spike
+        condition: '$A > 100'
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: prometheus
+            model:
+              expr: sum(rate(http_requests_total[5m]))
+              intervalMs: 1000
+              maxDataPoints: 43200
+        dashboardUid: ""
+        panelId: 0
+        noDataState: NoData
+        execErrState: Alerting
+        for: 2m
+        annotations:
+          description: |
+            Request rate is unusually high.
+            Current request rate: {{ $values.A }} requests/second
+          summary: Unusual spike in request rate
+        labels:
+          service: backend
+          severity: warning
+        isPaused: false
+
+# ─────────────── UNIFIED ALERTING CONFIG ───────────────
+# (Grafana v8+ default; comment out if you are still using legacy mode)
+
+receivers:
+  - name: default-email
+    email_configs:
+      - to: sre-team@example.com
+
+  - name: critical-email
+    email_configs:
+      - to: sre-team@example.com
+
+  - name: warning-email
+    email_configs:
+      - to: sre-team@example.com
+
+root:
+  receiver: default-email
+  routes:
+    - receiver: critical-email
+      matchers:
+        - severity = critical
+    - receiver: warning-email
+      matchers:
+        - severity = warning

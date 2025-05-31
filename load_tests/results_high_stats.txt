@@ -1,0 +1,5 @@
+CONTAINER ID   NAME                    CPU %     MEM USAGE / LIMIT    MEM %     NET I/O           BLOCK I/O        PIDS
+c01e6d0dd2be   load_tests-backend-2    0.18%     52.44MiB / 2GiB      2.56%     21.2MB / 30.6MB   0B / 4.1kB       1
+dd8f44b12f89   load_tests-db-1         0.01%     18.06MiB / 1GiB      1.76%     1.61kB / 0B       0B / 344kB       7
+97ab0c42935b   srefinal-prometheus-1   0.00%     37.19MiB / 15.2GiB   0.24%     64.6kB / 71.2kB   2.13MB / 270kB   18
+c21677c5fdb5   srefinal-grafana-1      0.71%     85.8MiB / 15.2GiB    0.55%     274kB / 639kB     1.93MB / 426kB   17

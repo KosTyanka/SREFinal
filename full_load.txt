@@ -1,0 +1,766 @@
+kostyanka@DESKTOP-RHV1NTH:/mnt/c/Users/User/Desktop/uni/SREFinal/load_tests$ ./simulate_load.sh
+Creating test scenarios...
+Created docker-compose.baseline.yml with:
+- CPU: 1.0
+- Memory: 512M
+- Replicas: 1
+Created docker-compose.medium.yml with:
+- CPU: 2.0
+- Memory: 1G
+- Replicas: 2
+Created docker-compose.high.yml with:
+- CPU: 3.0
+- Memory: 2G
+- Replicas: 3
+Created docker-compose.spike.yml with:
+- CPU: 4.0
+- Memory: 4G
+- Replicas: 5
+Starting load simulation scenarios...
+Running baseline scenario for 300 seconds
+WARN[0000] /mnt/c/Users/User/Desktop/uni/SREFinal/load_tests/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
+WARN[0000] /mnt/c/Users/User/Desktop/uni/SREFinal/load_tests/docker-compose.baseline.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
+[+] Building 34.3s (14/14) FINISHED                                                                                                                                                                                   docker:default
+ => [backend internal] load build definition from Dockerfile                                                                                                                                                                    0.0s
+ => => transferring dockerfile: 657B                                                                                                                                                                                            0.0s
+ => [backend internal] load metadata for docker.io/library/python:3.9-slim                                                                                                                                                     12.5s
+ => [backend internal] load .dockerignore                                                                                                                                                                                       0.0s
+ => => transferring context: 2B                                                                                                                                                                                                 0.0s
+ => [backend 1/8] FROM docker.io/library/python:3.9-slim@sha256:aff2066ec8914f7383e115bbbcde4d24da428eac377b0d4bb73806de992d240f                                                                                                0.0s
+ => => resolve docker.io/library/python:3.9-slim@sha256:aff2066ec8914f7383e115bbbcde4d24da428eac377b0d4bb73806de992d240f                                                                                                        0.0s
+ => [backend internal] load build context                                                                                                                                                                                       0.1s
+ => => transferring context: 15.51kB                                                                                                                                                                                            0.0s
+ => CACHED [backend 2/8] WORKDIR /app                                                                                                                                                                                           0.0s
+ => CACHED [backend 3/8] RUN apt-get update && apt-get install -y     gcc     libpq-dev     && rm -rf /var/lib/apt/lists/*                                                                                                      0.0s
+ => CACHED [backend 4/8] RUN useradd -m -u 1000 appuser                                                                                                                                                                         0.0s
+ => [backend 5/8] COPY requirements.txt .                                                                                                                                                                                       0.0s
+ => [backend 6/8] RUN pip install --no-cache-dir -r requirements.txt                                                                                                                                                           18.0s
+ => [backend 7/8] COPY . .                                                                                                                                                                                                      0.1s
+ => [backend 8/8] RUN chown -R appuser:appuser /app                                                                                                                                                                             0.3s
+ => [backend] exporting to image                                                                                                                                                                                                3.1s
+ => => exporting layers                                                                                                                                                                                                         1.9s
+ => => exporting manifest sha256:05d50482115d2aafd9de1fec7a0f6b18987a3b8f3eaa4e1d6b563063f45557e9                                                                                                                               0.0s
+ => => exporting config sha256:27594c349b494efa241c032e56991a8b75d38a6f3c6b2dba42fb771acf7c97b3                                                                                                                                 0.0s
+ => => exporting attestation manifest sha256:d93a4db7048db1fbad906b7219f24fe97ca79d32f2279b9ee6999321d41e5480                                                                                                                   0.0s
+ => => exporting manifest list sha256:780d94377e2da84518f20a7048f05e6192dbd86f29f2fcda077905bed0776607                                                                                                                          0.0s
+ => => naming to docker.io/library/load_tests-backend:latest                                                                                                                                                                    0.0s
+ => => unpacking to docker.io/library/load_tests-backend:latest                                                                                                                                                                 1.1s
+ => [backend] resolving provenance for metadata file                                                                                                                                                                            0.0s
+[+] Running 4/4
+ ✔ Network load_tests_backend-net     Created                                                                                                                                                                                   0.1s
+ ✔ Volume "load_tests_postgres_data"  Created                                                                                                                                                                                   0.0s
+ ✔ Container load_tests-db-1          Started                                                                                                                                                                                   0.7s
+ ✔ Container load_tests-backend-1     Started                                                                                                                                                                                   0.8s
+Starting Baseline Load Test
+Running baseline_health
+Requests: 1000, Concurrency: 100
+Endpoint: /health
+Completed 100 requests
+Completed 200 requests
+Completed 300 requests
+Completed 400 requests
+Completed 500 requests
+Completed 600 requests
+Completed 700 requests
+Completed 800 requests
+Completed 900 requests
+Completed 1000 requests
+Finished 1000 requests
+Results:
+Requests per second: 1157.00
+Mean time per request: 86.431 ms
+95th percentile: 127 ms
+----------------------------------------
+Running baseline_concerts
+Requests: 1000, Concurrency: 100
+Endpoint: /concerts
+Completed 100 requests
+Completed 200 requests
+Completed 300 requests
+Completed 400 requests
+Completed 500 requests
+Completed 600 requests
+Completed 700 requests
+Completed 800 requests
+Completed 900 requests
+Completed 1000 requests
+Finished 1000 requests
+Results:
+Requests per second: 1515.40
+Mean time per request: 65.989 ms
+95th percentile: 81 ms
+----------------------------------------
+Starting Medium Load Test
+Running medium_health
+Requests: 5000, Concurrency: 500
+Endpoint: /health
+Completed 500 requests
+Completed 1000 requests
+Completed 1500 requests
+Completed 2000 requests
+Completed 2500 requests
+Completed 3000 requests
+Completed 3500 requests
+Completed 4000 requests
+Completed 4500 requests
+Completed 5000 requests
+Finished 5000 requests
+Results:
+Requests per second: 1763.87
+Mean time per request: 283.467 ms
+95th percentile: 310 ms
+----------------------------------------
+Running medium_concerts
+Requests: 5000, Concurrency: 500
+Endpoint: /concerts
+Completed 500 requests
+Completed 1000 requests
+Completed 1500 requests
+Completed 2000 requests
+Completed 2500 requests
+Completed 3000 requests
+Completed 3500 requests
+Completed 4000 requests
+Completed 4500 requests
+Completed 5000 requests
+Finished 5000 requests
+Results:
+Requests per second: 1866.81
+Mean time per request: 267.837 ms
+95th percentile: 279 ms
+----------------------------------------
+Starting High Load Test
+Running high_health
+Requests: 10000, Concurrency: 1000
+Endpoint: /health
+Completed 1000 requests
+Completed 2000 requests
+Completed 3000 requests
+Completed 4000 requests
+Completed 5000 requests
+Completed 6000 requests
+Completed 7000 requests
+Completed 8000 requests
+Completed 9000 requests
+Completed 10000 requests
+Finished 10000 requests
+Results:
+Requests per second: 1827.49
+Mean time per request: 547.199 ms
+95th percentile: 663 ms
+----------------------------------------
+Running high_concerts
+Requests: 10000, Concurrency: 1000
+Endpoint: /concerts
+Completed 1000 requests
+Completed 2000 requests
+Completed 3000 requests
+Completed 4000 requests
+Completed 5000 requests
+Completed 6000 requests
+Completed 7000 requests
+Completed 8000 requests
+Completed 9000 requests
+Completed 10000 requests
+Finished 10000 requests
+Results:
+Requests per second: 1818.20
+Mean time per request: 549.993 ms
+95th percentile: 614 ms
+----------------------------------------
+Starting Spike Test
+Running spike_health
+Requests: 5000, Concurrency: 2000
+Endpoint: /health
+Completed 500 requests
+Completed 1000 requests
+Completed 1500 requests
+Completed 2000 requests
+Completed 2500 requests
+Completed 3000 requests
+Completed 3500 requests
+Completed 4000 requests
+Completed 4500 requests
+Completed 5000 requests
+Finished 5000 requests
+Results:
+Requests per second: 1745.99
+Mean time per request: 1145.479 ms
+95th percentile: 1178 ms
+----------------------------------------
+Running spike_concerts
+Requests: 5000, Concurrency: 2000
+Endpoint: /concerts
+Completed 500 requests
+Completed 1000 requests
+Completed 1500 requests
+Completed 2000 requests
+Completed 2500 requests
+Completed 3000 requests
+Completed 3500 requests
+Completed 4000 requests
+Completed 4500 requests
+Completed 5000 requests
+Finished 5000 requests
+Results:
+Requests per second: 1746.22
+Mean time per request: 1145.330 ms
+95th percentile: 1499 ms
+----------------------------------------
+Creating Test Summary Report
+Load testing completed. Results saved in test_summary.md
+Collecting metrics for 300 seconds...
+[+] Running 3/3/c/Users/User/Desktop/uni/SREFinal/load_tests/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
+ ✔ Container load_tests-backend-1  Removed                                                                                                                                                                                      0.4s
+ ✔ Container load_tests-db-1       Removed                                                                                                                                                                                      0.3s
+ ✔ Network load_tests_backend-net  Removed                                                                                                                                                                                      0.2s
+Completed baseline scenario
+Running medium scenario for 300 seconds
+WARN[0000] /mnt/c/Users/User/Desktop/uni/SREFinal/load_tests/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
+WARN[0000] /mnt/c/Users/User/Desktop/uni/SREFinal/load_tests/docker-compose.medium.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
+[+] Running 3/4
+ ✔ Network load_tests_backend-net  Created                                                                                                                                                                                      0.1s
+ ✔ Container load_tests-db-1       Started                                                                                                                                                                                      0.7s
+ ✔ Container load_tests-backend-2  Started                                                                                                                                                                                      0.8s
+ ⠼ Container load_tests-backend-1  Starting                                                                                                                                                                                     1.0s
+Error response from daemon: driver failed programming external connectivity on endpoint load_tests-backend-1 (db5bb57e9de3f9dfcfbc3268d9d49ea01afb9285883cbed6399ce1709091dd11): Bind for 0.0.0.0:8000 failed: port is already allocated
+Starting Baseline Load Test
+Running baseline_health
+Requests: 1000, Concurrency: 100
+Endpoint: /health
+Completed 100 requests
+Completed 200 requests
+Completed 300 requests
+Completed 400 requests
+Completed 500 requests
+Completed 600 requests
+Completed 700 requests
+Completed 800 requests
+Completed 900 requests
+Completed 1000 requests
+Finished 1000 requests
+Results:
+Requests per second: 1590.42
+Mean time per request: 62.876 ms
+95th percentile: 78 ms
+----------------------------------------
+Running baseline_concerts
+Requests: 1000, Concurrency: 100
+Endpoint: /concerts
+Completed 100 requests
+Completed 200 requests
+Completed 300 requests
+Completed 400 requests
+Completed 500 requests
+Completed 600 requests
+Completed 700 requests
+Completed 800 requests
+Completed 900 requests
+Completed 1000 requests
+Finished 1000 requests
+Results:
+Requests per second: 1786.52
+Mean time per request: 55.975 ms
+95th percentile: 69 ms
+----------------------------------------
+Starting Medium Load Test
+Running medium_health
+Requests: 5000, Concurrency: 500
+Endpoint: /health
+Completed 500 requests
+Completed 1000 requests
+Completed 1500 requests
+Completed 2000 requests
+Completed 2500 requests
+Completed 3000 requests
+Completed 3500 requests
+Completed 4000 requests
+Completed 4500 requests
+Completed 5000 requests
+Finished 5000 requests
+Results:
+Requests per second: 1877.47
+Mean time per request: 266.316 ms
+95th percentile: 302 ms
+----------------------------------------
+Running medium_concerts
+Requests: 5000, Concurrency: 500
+Endpoint: /concerts
+Completed 500 requests
+Completed 1000 requests
+Completed 1500 requests
+Completed 2000 requests
+Completed 2500 requests
+Completed 3000 requests
+Completed 3500 requests
+Completed 4000 requests
+Completed 4500 requests
+Completed 5000 requests
+Finished 5000 requests
+Results:
+Requests per second: 1867.18
+Mean time per request: 267.783 ms
+95th percentile: 278 ms
+----------------------------------------
+Starting High Load Test
+Running high_health
+Requests: 10000, Concurrency: 1000
+Endpoint: /health
+Completed 1000 requests
+Completed 2000 requests
+Completed 3000 requests
+Completed 4000 requests
+Completed 5000 requests
+Completed 6000 requests
+Completed 7000 requests
+Completed 8000 requests
+Completed 9000 requests
+Completed 10000 requests
+Finished 10000 requests
+Results:
+Requests per second: 1844.24
+Mean time per request: 542.229 ms
+95th percentile: 686 ms
+----------------------------------------
+Running high_concerts
+Requests: 10000, Concurrency: 1000
+Endpoint: /concerts
+Completed 1000 requests
+Completed 2000 requests
+Completed 3000 requests
+Completed 4000 requests
+Completed 5000 requests
+Completed 6000 requests
+Completed 7000 requests
+Completed 8000 requests
+Completed 9000 requests
+Completed 10000 requests
+Finished 10000 requests
+Results:
+Requests per second: 1834.85
+Mean time per request: 545.003 ms
+95th percentile: 553 ms
+----------------------------------------
+Starting Spike Test
+Running spike_health
+Requests: 5000, Concurrency: 2000
+Endpoint: /health
+Completed 500 requests
+Completed 1000 requests
+Completed 1500 requests
+Completed 2000 requests
+Completed 2500 requests
+Completed 3000 requests
+Completed 3500 requests
+Completed 4000 requests
+Completed 4500 requests
+Completed 5000 requests
+Finished 5000 requests
+Results:
+Requests per second: 1703.47
+Mean time per request: 1174.074 ms
+95th percentile: 1300 ms
+----------------------------------------
+Running spike_concerts
+Requests: 5000, Concurrency: 2000
+Endpoint: /concerts
+Completed 500 requests
+Completed 1000 requests
+Completed 1500 requests
+Completed 2000 requests
+Completed 2500 requests
+Completed 3000 requests
+Completed 3500 requests
+Completed 4000 requests
+Completed 4500 requests
+Completed 5000 requests
+Finished 5000 requests
+Results:
+Requests per second: 1776.93
+Mean time per request: 1125.535 ms
+95th percentile: 1116 ms
+----------------------------------------
+Creating Test Summary Report
+Load testing completed. Results saved in test_summary.md
+Collecting metrics for 300 seconds...
+WARN[0000] /mnt/c/Users/User/Desktop/uni/SREFinal/load_tests/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
+WARN[0000] /mnt/c/Users/User/Desktop/uni/SREFinal/load_tests/docker-compose.medium.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
+[+] Running 4/4
+ ✔ Container load_tests-backend-1  Removed                                                                                                                                                                                      0.0s
+ ✔ Container load_tests-backend-2  Removed                                                                                                                                                                                      0.5s
+ ✔ Container load_tests-db-1       Removed                                                                                                                                                                                      0.3s
+ ✔ Network load_tests_backend-net  Removed                                                                                                                                                                                      0.2s
+Completed medium scenario
+Running high scenario for 300 seconds
+WARN[0000] /mnt/c/Users/User/Desktop/uni/SREFinal/load_tests/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
+WARN[0000] /mnt/c/Users/User/Desktop/uni/SREFinal/load_tests/docker-compose.high.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
+[+] Running 4/5
+ ✔ Network load_tests_backend-net  Created                                                                                                                                                                                      0.1s
+ ✔ Container load_tests-db-1       Started                                                                                                                                                                                      0.7s
+ ⠸ Container load_tests-backend-3  Starting                                                                                                                                                                                     1.0s
+ ✔ Container load_tests-backend-1  Created                                                                                                                                                                                      0.2s
+ ✔ Container load_tests-backend-2  Started                                                                                                                                                                                      0.9s
+Error response from daemon: driver failed programming external connectivity on endpoint load_tests-backend-3 (37fde73a7fc252709ec37f45e76cbe6a32706e77e43ec8e40ddea469569ac590): Bind for 0.0.0.0:8000 failed: port is already allocated
+Starting Baseline Load Test
+Running baseline_health
+Requests: 1000, Concurrency: 100
+Endpoint: /health
+Completed 100 requests
+Completed 200 requests
+Completed 300 requests
+Completed 400 requests
+Completed 500 requests
+Completed 600 requests
+Completed 700 requests
+Completed 800 requests
+Completed 900 requests
+Completed 1000 requests
+Finished 1000 requests
+Results:
+Requests per second: 1650.32
+Mean time per request: 60.594 ms
+95th percentile: 68 ms
+----------------------------------------
+Running baseline_concerts
+Requests: 1000, Concurrency: 100
+Endpoint: /concerts
+Completed 100 requests
+Completed 200 requests
+Completed 300 requests
+Completed 400 requests
+Completed 500 requests
+Completed 600 requests
+Completed 700 requests
+Completed 800 requests
+Completed 900 requests
+Completed 1000 requests
+Finished 1000 requests
+Results:
+Requests per second: 1572.97
+Mean time per request: 63.574 ms
+95th percentile: 86 ms
+----------------------------------------
+Starting Medium Load Test
+Running medium_health
+Requests: 5000, Concurrency: 500
+Endpoint: /health
+Completed 500 requests
+Completed 1000 requests
+Completed 1500 requests
+Completed 2000 requests
+Completed 2500 requests
+Completed 3000 requests
+Completed 3500 requests
+Completed 4000 requests
+Completed 4500 requests
+Completed 5000 requests
+Finished 5000 requests
+Results:
+Requests per second: 1818.22
+Mean time per request: 274.993 ms
+95th percentile: 352 ms
+----------------------------------------
+Running medium_concerts
+Requests: 5000, Concurrency: 500
+Endpoint: /concerts
+Completed 500 requests
+Completed 1000 requests
+Completed 1500 requests
+Completed 2000 requests
+Completed 2500 requests
+Completed 3000 requests
+Completed 3500 requests
+Completed 4000 requests
+Completed 4500 requests
+Completed 5000 requests
+Finished 5000 requests
+Results:
+Requests per second: 1869.90
+Mean time per request: 267.393 ms
+95th percentile: 310 ms
+----------------------------------------
+Starting High Load Test
+Running high_health
+Requests: 10000, Concurrency: 1000
+Endpoint: /health
+Completed 1000 requests
+Completed 2000 requests
+Completed 3000 requests
+Completed 4000 requests
+Completed 5000 requests
+Completed 6000 requests
+Completed 7000 requests
+Completed 8000 requests
+Completed 9000 requests
+Completed 10000 requests
+Finished 10000 requests
+Results:
+Requests per second: 1813.44
+Mean time per request: 551.438 ms
+95th percentile: 651 ms
+----------------------------------------
+Running high_concerts
+Requests: 10000, Concurrency: 1000
+Endpoint: /concerts
+Completed 1000 requests
+Completed 2000 requests
+Completed 3000 requests
+Completed 4000 requests
+Completed 5000 requests
+Completed 6000 requests
+Completed 7000 requests
+Completed 8000 requests
+Completed 9000 requests
+Completed 10000 requests
+Finished 10000 requests
+Results:
+Requests per second: 1721.54
+Mean time per request: 580.876 ms
+95th percentile: 625 ms
+----------------------------------------
+Starting Spike Test
+Running spike_health
+Requests: 5000, Concurrency: 2000
+Endpoint: /health
+Completed 500 requests
+Completed 1000 requests
+Completed 1500 requests
+Completed 2000 requests
+Completed 2500 requests
+Completed 3000 requests
+Completed 3500 requests
+Completed 4000 requests
+Completed 4500 requests
+Completed 5000 requests
+Finished 5000 requests
+Results:
+Requests per second: 1806.72
+Mean time per request: 1106.979 ms
+95th percentile: 1546 ms
+----------------------------------------
+Running spike_concerts
+Requests: 5000, Concurrency: 2000
+Endpoint: /concerts
+Completed 500 requests
+Completed 1000 requests
+Completed 1500 requests
+Completed 2000 requests
+Completed 2500 requests
+Completed 3000 requests
+Completed 3500 requests
+Completed 4000 requests
+Completed 4500 requests
+Completed 5000 requests
+Finished 5000 requests
+Results:
+Requests per second: 1645.55
+Mean time per request: 1215.401 ms
+95th percentile: 1652 ms
+----------------------------------------
+Creating Test Summary Report
+Load testing completed. Results saved in test_summary.md
+Collecting metrics for 300 seconds...
+
+
+
+
+WARN[0000] /mnt/c/Users/User/Desktop/uni/SREFinal/load_tests/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
+WARN[0000] /mnt/c/Users/User/Desktop/uni/SREFinal/load_tests/docker-compose.high.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
+[+] Running 5/5
+ ✔ Container load_tests-backend-1  Removed                                                                                                                                                                                      0.0s
+ ✔ Container load_tests-backend-2  Removed                                                                                                                                                                                      0.5s
+ ✔ Container load_tests-backend-3  Removed                                                                                                                                                                                      0.1s
+ ✔ Container load_tests-db-1       Removed                                                                                                                                                                                      0.3s
+ ✔ Network load_tests_backend-net  Removed                                                                                                                                                                                      0.2s
+Completed high scenario
+Running spike scenario for 300 seconds
+WARN[0000] /mnt/c/Users/User/Desktop/uni/SREFinal/load_tests/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
+WARN[0000] /mnt/c/Users/User/Desktop/uni/SREFinal/load_tests/docker-compose.spike.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
+[+] Running 6/7
+ ✔ Network load_tests_backend-net  Created                                                                                                                                                                                      0.1s
+ ✔ Container load_tests-db-1       Started                                                                                                                                                                                      0.8s
+ ✔ Container load_tests-backend-5  Created                                                                                                                                                                                      0.2s
+ ✔ Container load_tests-backend-2  Created                                                                                                                                                                                      0.2s
+ ✔ Container load_tests-backend-1  Started                                                                                                                                                                                      0.9s
+ ⠸ Container load_tests-backend-3  Starting                                                                                                                                                                                     1.1s
+ ✔ Container load_tests-backend-4  Created                                                                                                                                                                                      0.2s
+Error response from daemon: driver failed programming external connectivity on endpoint load_tests-backend-3 (0fc71fbb62b37583221ad94f8cb06a32df6e184508dac009b473e67b0e970820): Bind for 0.0.0.0:8000 failed: port is already allocated
+Starting Baseline Load Test
+Running baseline_health
+Requests: 1000, Concurrency: 100
+Endpoint: /health
+Completed 100 requests
+Completed 200 requests
+Completed 300 requests
+Completed 400 requests
+Completed 500 requests
+Completed 600 requests
+Completed 700 requests
+Completed 800 requests
+Completed 900 requests
+Completed 1000 requests
+Finished 1000 requests
+Results:
+Requests per second: 1827.76
+Mean time per request: 54.712 ms
+95th percentile: 59 ms
+----------------------------------------
+Running baseline_concerts
+Requests: 1000, Concurrency: 100
+Endpoint: /concerts
+Completed 100 requests
+Completed 200 requests
+Completed 300 requests
+Completed 400 requests
+Completed 500 requests
+Completed 600 requests
+Completed 700 requests
+Completed 800 requests
+Completed 900 requests
+Completed 1000 requests
+Finished 1000 requests
+Results:
+Requests per second: 1760.03
+Mean time per request: 56.817 ms
+95th percentile: 67 ms
+----------------------------------------
+Starting Medium Load Test
+Running medium_health
+Requests: 5000, Concurrency: 500
+Endpoint: /health
+Completed 500 requests
+Completed 1000 requests
+Completed 1500 requests
+Completed 2000 requests
+Completed 2500 requests
+Completed 3000 requests
+Completed 3500 requests
+Completed 4000 requests
+Completed 4500 requests
+Completed 5000 requests
+Finished 5000 requests
+Results:
+Requests per second: 1800.95
+Mean time per request: 277.631 ms
+95th percentile: 357 ms
+----------------------------------------
+Running medium_concerts
+Requests: 5000, Concurrency: 500
+Endpoint: /concerts
+Completed 500 requests
+Completed 1000 requests
+Completed 1500 requests
+Completed 2000 requests
+Completed 2500 requests
+Completed 3000 requests
+Completed 3500 requests
+Completed 4000 requests
+Completed 4500 requests
+Completed 5000 requests
+Finished 5000 requests
+Results:
+Requests per second: 1684.24
+Mean time per request: 296.869 ms
+95th percentile: 355 ms
+----------------------------------------
+Starting High Load Test
+Running high_health
+Requests: 10000, Concurrency: 1000
+Endpoint: /health
+Completed 1000 requests
+Completed 2000 requests
+Completed 3000 requests
+Completed 4000 requests
+Completed 5000 requests
+Completed 6000 requests
+Completed 7000 requests
+Completed 8000 requests
+Completed 9000 requests
+Completed 10000 requests
+Finished 10000 requests
+Results:
+Requests per second: 1898.02
+Mean time per request: 526.866 ms
+95th percentile: 557 ms
+----------------------------------------
+Running high_concerts
+Requests: 10000, Concurrency: 1000
+Endpoint: /concerts
+Completed 1000 requests
+Completed 2000 requests
+Completed 3000 requests
+Completed 4000 requests
+Completed 5000 requests
+Completed 6000 requests
+Completed 7000 requests
+Completed 8000 requests
+Completed 9000 requests
+Completed 10000 requests
+Finished 10000 requests
+Results:
+Requests per second: 1772.38
+Mean time per request: 564.212 ms
+95th percentile: 655 ms
+----------------------------------------
+Starting Spike Test
+Running spike_health
+Requests: 5000, Concurrency: 2000
+Endpoint: /health
+Completed 500 requests
+Completed 1000 requests
+Completed 1500 requests
+Completed 2000 requests
+Completed 2500 requests
+Completed 3000 requests
+Completed 3500 requests
+Completed 4000 requests
+Completed 4500 requests
+Completed 5000 requests
+Finished 5000 requests
+Results:
+Requests per second: 1834.78
+Mean time per request: 1090.052 ms
+95th percentile: 1230 ms
+----------------------------------------
+Running spike_concerts
+Requests: 5000, Concurrency: 2000
+Endpoint: /concerts
+Completed 500 requests
+Completed 1000 requests
+Completed 1500 requests
+Completed 2000 requests
+Completed 2500 requests
+Completed 3000 requests
+Completed 3500 requests
+Completed 4000 requests
+Completed 4500 requests
+Completed 5000 requests
+Finished 5000 requests
+Results:
+Requests per second: 1799.34
+Mean time per request: 1111.516 ms
+95th percentile: 1094 ms
+----------------------------------------
+Creating Test Summary Report
+Load testing completed. Results saved in test_summary.md
+Collecting metrics for 300 seconds...
+[+] Running 7/7/c/Users/User/Desktop/uni/SREFinal/load_tests/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
+ ✔ Container load_tests-backend-2  Removed                                                                                                                                                                                      0.1s
+ ✔ Container load_tests-backend-3  Removed                                                                                                                                                                                      0.1s
+ ✔ Container load_tests-backend-1  Removed                                                                                                                                                                                      0.5s
+ ✔ Container load_tests-backend-4  Removed                                                                                                                                                                                      0.1s
+ ✔ Container load_tests-backend-5  Removed                                                                                                                                                                                      0.1s
+ ✔ Container load_tests-db-1       Removed                                                                                                                                                                                      0.3s
+ ✔ Network load_tests_backend-net  Removed                                                                                                                                                                                      0.2s
+Completed spike scenario
+Generating summary report...
+cat: results_baseline.txt: No such file or directory
+cat: results_medium.txt: No such file or directory
+cat: results_high.txt: No such file or directory
+cat: results_spike.txt: No such file or directory
+Simulation completed. Results saved in simulation_summary.md
+kostyanka@DESKTOP-RHV1NTH:/mnt/c/Users/User/Desktop/uni/SREFinal/load_tests$
+kostyanka@DESKTOP-RHV1NTH:/mnt/c/Users/User/Desktop/uni/SREFinal/load_tests$
+kostyanka@DESKTOP-RHV1NTH:/mnt/c/Users/User/Desktop/uni/SREFinal/load_tests$
+kostyanka@DESKTOP-RHV1NTH:/mnt/c/Users/User/Desktop/uni/SREFinal/load_tests$
+kostyanka@DESKTOP-RHV1NTH:/mnt/c/Users/User/Desktop/uni/SREFinal/load_tests$

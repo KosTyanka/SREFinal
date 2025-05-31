@@ -1,0 +1,39 @@
+# ChaosCompose Configuration
+version: '1.0'
+
+# Health check configuration
+health_check:
+  endpoint: "http://localhost:8000/health"
+  interval_seconds: 5
+  timeout_seconds: 5
+  max_retries: 30
+
+# Prometheus configuration
+prometheus:
+  pushgateway_url: "http://localhost:9091"
+  metric_prefix: "chaos_test"
+
+# Chaos scenarios
+scenarios:
+  - name: "backend_crash"
+    description: "Simulate backend service crash"
+    target_service: "backend"
+    actions:
+      - type: "kill"
+        signal: "SIGKILL"
+        duration_seconds: 30
+        frequency_minutes: 0.5
+
+  - name: "database_pause"
+    description: "Simulate database freeze"
+    target_service: "db"
+    actions:
+      - type: "pause"
+        duration_seconds: 15
+        frequency_minutes: 1
+
+# Test duration and reporting
+test_settings:
+  total_duration_minutes: 30
+  report_format: ["text", "html"]
+  grafana_dashboard: true 

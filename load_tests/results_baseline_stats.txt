@@ -1,0 +1,3 @@
+CONTAINER ID   NAME                   CPU %     MEM USAGE / LIMIT   MEM %     NET I/O           BLOCK I/O     PIDS
+9cb6d43c4a40   load_tests-backend-1   0.16%     53.37MiB / 512MiB   10.42%    21.1MB / 30.5MB   0B / 4.1kB    1
+1a3ec884700b   load_tests-db-1        0.00%     30.55MiB / 1GiB     2.98%     1.61kB / 0B       0B / 49.9MB   7
