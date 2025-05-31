@@ -1,0 +1,28 @@
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+*.tfvars
+!terraform.tfvars.template
+
+# Node.js
+node_modules/
+build/
+dist/
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db 

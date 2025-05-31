@@ -1,0 +1,14 @@
+# AWS Credentials
+aws_access_key_id = "your-access-key-here"
+aws_secret_access_key = "your-secret-key-here"
+
+# AWS Region
+aws_region = "us-west-2"
+
+# VPC Configuration
+vpc_cidr = "10.0.0.0/16"
+availability_zones = ["us-west-2a", "us-west-2b"]
+
+# Database Credentials
+db_username = "dbadmin"
+db_password = "pass" 
