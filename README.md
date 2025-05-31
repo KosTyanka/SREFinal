@@ -16,8 +16,6 @@ A scalable concert ticketing system designed to handle high-load scenarios with 
 - Infrastructure: Docker + Terraform
 - Monitoring: Prometheus + Grafana
 
-## Getting Started
-
 ### Prerequisites
 - Docker and Docker Compose
 - Node.js 18+
@@ -29,18 +27,3 @@ A scalable concert ticketing system designed to handle high-load scenarios with 
 2. Run `docker-compose up` to start all services
 3. Access the application at http://localhost:3000
 
-### Production Deployment
-See [deployment documentation](./docs/deployment.md) for production setup instructions.
-
-## Documentation
-- [Architecture Overview](./docs/architecture.md)
-- [Development Guide](./docs/development.md)
-- [Monitoring Setup](./docs/monitoring.md)
-- [Security Guidelines](./docs/security.md)
-- [Load Testing](./docs/load-testing.md)
-
-## Contributing
-Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for details on our code of conduct and development process.
-
-## License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details. 
